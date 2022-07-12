@@ -16,8 +16,8 @@ export class UserController {
   async register(
     @Body() newUser : RegisterDto,
     @Res() res : Response
-  ):Promise<Response<RegisterResponse>>{
+  ):Promise<RegisterResponse>{
     console.log(newUser);
-    return res.json( await this.userService.register(newUser, res));
+    return  await this.userService.register(newUser, res);
   }
 }

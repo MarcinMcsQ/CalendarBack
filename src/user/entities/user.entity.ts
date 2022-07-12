@@ -47,12 +47,6 @@ export class UserEntity extends BaseEntity {
   })
   sex: OptionsSexSelect | "";
 
-  // name: 'status',
-  // type: 'enum',
-  // enum: ['active', 'inactive', 'paused'],
-  // enumName: 'statusEnum',
-  // default: '"inactive"'
-
 
   @Column({
     type: "enum",

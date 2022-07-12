@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { taskType, TaskType } from "types";
+import { TaskTypeDb, taskTypeDb } from "types";
 import { UserEntity } from "../../user/entities/user.entity";
 
 
@@ -29,10 +29,10 @@ export class TaskEntity extends BaseEntity {
 
   @Column({
     type:'enum',
-    enum:taskType,
-    default:'all',
+    enum:taskTypeDb,
+    default:'other',
   })
-  taskType: TaskType;
+  taskType: TaskTypeDb;
 
   @Column({
     type:'boolean',
@@ -48,14 +48,16 @@ export class TaskEntity extends BaseEntity {
   description: string;
 
   @Column({
-    type: "int",
+    nullable: true,
+    default: null,
   })
-  atHour: number;
+  atHour: number | null;
 
   @Column({
-    type: "int",
+    nullable: true,
+    default: null,
   })
-  atMinute: number;
+  atMinute: number | null;
 
   @ManyToOne(() => UserEntity, user => user.tasks)
   user: UserEntity;

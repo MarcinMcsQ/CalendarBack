@@ -1,4 +1,4 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import {Response} from "express";
 import {AuthLoginDto} from "./dto/auth-login.dto";
 import {UserEntity} from "../user/entities/user.entity";
@@ -14,14 +14,10 @@ export class AuthService {
     ) {
     }
 
-
     async login(userPas: AuthLoginDto, res: Response): Promise<any> {
         try {
-            const user = await UserEntity.findOne({
-                where: {
-                    email: userPas.email,
-                }
-            })
+            const user = await UserEntity.findOne({ where: { email: userPas.email, }})
+
             const passwordCorrect = bcrypt.compare(userPas.password, user.pwdHash)
 
             if (!user || !passwordCorrect
@@ -30,7 +26,6 @@ export class AuthService {
             }
 
             const payload = {username: user.email, sub: user.id};
-
 
             let token;
             let userWithThisToken = null;
@@ -46,9 +41,10 @@ export class AuthService {
                     secure: false,
                     domain: CONFIG_PRIV.cookie.DOMAIN,
                     httpOnly: true,
-                }).json({ok: true})
+                }).json({success: true})
         } catch (err) {
-            return res.json({error: err.message})
+            console.error(err)
+            throw new HttpException('Something wrong', HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
@@ -64,12 +60,11 @@ export class AuthService {
                     secure: false,
                     domain: CONFIG_PRIV.cookie.DOMAIN,
                     httpOnly: true,
-                }).json({ok: true})
+                }).json({success: true})
 
         }catch (err){
-            console.log(err)
+            console.error(err)
+            throw new HttpException('Something wrong', HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
-
     }
 }
