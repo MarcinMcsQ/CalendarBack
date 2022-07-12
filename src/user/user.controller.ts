@@ -1,7 +1,9 @@
-import {Body, Controller, Inject, Post} from '@nestjs/common';
+import { Body, Controller, Inject, Post, Req, Res } from "@nestjs/common";
+import {Response, Request} from 'express'
 import {UserService} from "./user.service";
 import {RegisterDto} from "./dto/register.dto";
 import { RegisterResponse } from "types";
+
 
 @Controller('user')
 export class UserController {
@@ -10,11 +12,12 @@ export class UserController {
     ) {
     }
 
- @Post('/register')
-    register(
-     @Body() newUser:RegisterDto,
- ):Promise<RegisterResponse>{
-        return this.userService.register(newUser)
- }
-
+  @Post('/register')
+  async register(
+    @Body() newUser : RegisterDto,
+    @Res() res : Response
+  ):Promise<Response<RegisterResponse>>{
+    console.log(newUser);
+    return res.json( await this.userService.register(newUser, res));
+  }
 }

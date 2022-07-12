@@ -1,8 +1,10 @@
 export enum registerResponseMessageOptions {
-  user_exist="exist"
+  user_exist="existEmail",
+  incorrect_email='incorrectEmail',
+  incorrect_pass='incorrectPass'
 }
 
-type registerResponseMessageOptionsType = string | "exist" ;
+type registerResponseMessageOptionsType = string | "exist" | "incorrectPass" |'incorrectEmail' ;
 
 
 export interface RegisterResponse{

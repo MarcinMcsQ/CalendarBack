@@ -1,7 +1,7 @@
 import {forwardRef, Inject, Injectable} from '@nestjs/common';
 import {Response} from "express";
 import {AuthLoginDto} from "./dto/auth-login.dto";
-import {UserEntity} from "../user/user.entity";
+import {UserEntity} from "../user/entities/user.entity";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
 import { CONFIG_PRIV } from "../../config/config";
