@@ -7,15 +7,18 @@ export class CreateTaskDto implements TaskFormData{
   @IsDateString()
   date: string ;
 
+  @IsOptional()
   @IsString()
   location: string;
 
   @IsString()
   title: string;
 
+  @IsOptional()
   @IsString()
   taskType: TaskTypeDb;
 
+  @IsOptional()
   @IsBoolean()
   important: boolean;
 

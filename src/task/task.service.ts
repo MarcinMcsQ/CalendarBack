@@ -7,7 +7,7 @@ import {
   TaskFormData, TaskRemoveResponse,
   TaskUpdateResponse,
   User
-} from "types";
+} from "../../types";
 
 @Injectable()
 export class TaskService {

@@ -5,6 +5,7 @@ import {UserEntity} from "../user/entities/user.entity";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
 import { CONFIG_PRIV } from "../../config/config";
+import { LoginResponse } from "../../types";
 
 
 @Injectable()
@@ -14,15 +15,23 @@ export class AuthService {
     ) {
     }
 
-    async login(userPas: AuthLoginDto, res: Response): Promise<any> {
+    async login(userPas: AuthLoginDto, res: Response): Promise<Response<LoginResponse>> {
         try {
             const user = await UserEntity.findOne({ where: { email: userPas.email, }})
 
+            if(!user){
+                return res.json({
+                    success:false
+                });
+            }
+
             const passwordCorrect = bcrypt.compare(userPas.password, user.pwdHash)
 
-            if (!user || !passwordCorrect
+            if (!passwordCorrect
             ) {
-                return res.json({error: 'Invalid login data'});
+                return res.json({
+                    success:false
+                });
             }
 
             const payload = {username: user.email, sub: user.id};
@@ -36,14 +45,16 @@ export class AuthService {
             user.currentTokenId = token;
             await user.save()
 
+
             return res
                 .cookie('jwt', token , {
+                    path:'/',
                     secure: false,
                     domain: CONFIG_PRIV.cookie.DOMAIN,
-                    httpOnly: true,
+                    httpOnly: false,
                 }).json({success: true})
         } catch (err) {
-            console.error(err)
+            console.error(err);
             throw new HttpException('Something wrong', HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -57,9 +68,10 @@ export class AuthService {
 
             return res
                 .cookie('jwt', '', {
+                    path:'/',
                     secure: false,
                     domain: CONFIG_PRIV.cookie.DOMAIN,
-                    httpOnly: true,
+                    httpOnly: false,
                 }).json({success: true})
 
         }catch (err){

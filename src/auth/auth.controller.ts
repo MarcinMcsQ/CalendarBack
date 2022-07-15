@@ -4,6 +4,7 @@ import { Response } from 'express';
 import {AuthLoginDto} from "./dto/auth-login.dto";
 import {JwtAuthGuard} from "./jwt-auth.guard";
 import {UserObject} from "../decorators/user-object.decorator";
+import { LoginResponse } from "../../types";
 
 
 @Controller('auth')
@@ -15,7 +16,7 @@ export class AuthController {
   async logIn(
       @Body() userPas: AuthLoginDto,
       @Res() res: Response,
-  ):Promise<any>{
+  ):Promise<Response<LoginResponse>>{
     return this.authService.login(userPas,res)
   }
 
@@ -24,7 +25,7 @@ export class AuthController {
   async logOut(
       @Res() res: Response,
       @UserObject() user
-  ):Promise<any>{
+  ):Promise<Response<{success:true}>>{
     return this.authService.logout(user,res)
   }
 

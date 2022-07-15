@@ -2,10 +2,10 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import {Response} from 'express';
 import { RegisterDto } from "./dto/register.dto";
 import { UserEntity } from "./entities/user.entity";
-import { RegisterResponse, registerResponseMessageOptions } from "types";
+import { RegisterResponse, registerResponseMessageOptions } from "../../types";
 import * as bcrypt from "bcrypt";
 import {v4 as uuid} from 'uuid';
-import { TaskEntity } from "../task/entities/task.entity";
+
 
 @Injectable()
 export class UserService {
@@ -27,18 +27,20 @@ export class UserService {
     }
   }
 
-  async register(newUser: RegisterDto , res:Response): Promise<RegisterResponse> {
+  async register(newUser: RegisterDto , res:Response): Promise<Response<RegisterResponse>> {
 
     try {
       const userExist = await UserEntity.findOne({ where: { email: newUser.email } });
       if (userExist) {
-        return {
+        return res.json({
           success: false,
           message: registerResponseMessageOptions.user_exist
-        };
+        });
       }
 
       this.registerValidation(newUser, res)
+
+
 
       const user = new UserEntity();
 
@@ -59,10 +61,10 @@ export class UserService {
 
 
       await user.save();
-      return {
+      return res.json({
         success: true,
         message: user.email
-      };
+      });
     }catch (err){
       console.error(err)
       throw new HttpException('Something wrong', HttpStatus.INTERNAL_SERVER_ERROR)
