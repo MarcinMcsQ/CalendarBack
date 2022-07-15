@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { TaskTypeDb, taskTypeDb } from "types";
+import { TaskTypeDb, taskTypeDb } from "../../../types";
 import { UserEntity } from "../../user/entities/user.entity";
 
 

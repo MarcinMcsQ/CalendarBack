@@ -23,15 +23,19 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.use(
-    cors({
-      origin: CONFIG_PRIV.cors.ORIGIN,
-      credentials: true
-    })
-  );
+  // app.use(
+  //   cors({
+  //     origin: CONFIG_PRIV.cors.ORIGIN,
+  //     credentials: true
+  //   })
+  // );
+  app.enableCors({
+    origin:CONFIG_PRIV.cors.ORIGIN,
+    credentials:true
+  });
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.use(cookieParser());
-  await app.listen(3000);
+  await app.listen(3001);
 }
 
 bootstrap();

@@ -41,13 +41,13 @@ export interface TaskFormData {
   id?: string | null;
   userId?:string;
   date: string;
-  location: string | null;
-  title: string;
-  taskType: TaskTypeDb ;
-  important: boolean;
-  description: string | null;
-  atHour: number | null;
-  atMinute: number | null;
+  location?: string;
+  title?: string;
+  taskType?: TaskTypeDb ;
+  important?: boolean;
+  description?: string ;
+  atHour?: number | null;
+  atMinute?: number | null;
 }
 
 export type TaskCreateResponse = {

@@ -23,6 +23,7 @@ export class TaskController {
     @UserObject() user: User,
     @Body() createTaskDto: CreateTaskDto
   ):Promise<TaskCreateResponse> {
+    console.log(createTaskDto);
     return await this.taskService.create(createTaskDto, user);
   }
 
